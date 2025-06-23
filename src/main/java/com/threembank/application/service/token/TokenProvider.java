@@ -1,7 +1,7 @@
 package com.threembank.application.service.token;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import com.threembank.infrastructure.security.user.BasicUserDetails;
 
 public interface TokenProvider {
-    TokenResult generate(UserDetails userDetails);
+    TokenResult generate(BasicUserDetails userDetails);
 }

@@ -9,3 +9,5 @@
 /dataSources/
 /dataSources.local.xml
 /.env
+/src/main/resources/keys/private.key
+/src/main/resources/keys/public.pem

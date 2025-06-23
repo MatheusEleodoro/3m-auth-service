@@ -3,6 +3,7 @@ package com.threembank.infrastructure.security.jwt;
 import com.threembank.application.service.token.TokenResult;
 import com.threembank.application.service.token.TokenProvider;
 import com.threembank.infrastructure.security.config.properties.SecProperties;
+import com.threembank.infrastructure.security.user.BasicUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,15 +24,16 @@ public class JwtTokenProvider implements TokenProvider {
    private final JwtEncoder encoder;
 
     @Override
-    public TokenResult generate(UserDetails userDetails) {
+    public TokenResult generate(BasicUserDetails userDetails) {
         var now = Instant.now();
         var uri = URI.create(request.getRequestURL().toString());
         var issuer = "%s://%s".formatted(uri.getScheme(),uri.getAuthority());
         var claimset = JwtClaimsSet.builder()
-                .subject(userDetails.getUsername())
+                .subject(String.valueOf(userDetails.getId()))
                 .issuer(issuer)
                 .issuedAt(now)
                 .expiresAt(now.plus(properties.getExpirationAt()))
+                .claim("username",userDetails.getUsername())
                 .claim("authorities", userDetails.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .toList())

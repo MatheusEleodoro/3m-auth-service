@@ -1,4 +1,6 @@
 services:
+  port: ${SERV_PORT:8080}
+  context: ${SERV_CONTEXT:/}
   connection:
     database:
       name: ${DB_DATABASE}
@@ -28,13 +30,16 @@ services:
 
 
 server:
-  port: 8080
+  port: ${services.port}
+  servlet:
+    context-path: ${services.context}
   ssl:
     enabled: ${services.security.ssl.enable}
     key-store-type: ${services.security.ssl.type}
     key-store: ${services.security.ssl.store}
     key-store-password: ${services.security.ssl.password}
     key-alias: ${services.security.ssl.alias}
+
 spring:
   profiles:
     active: prod,doc
